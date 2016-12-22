@@ -12,7 +12,7 @@ function makeArray(word){
   //break string into an array and reverse
  let wordArray = word.split("").reverse()
  //determine the tone of the word
- toneNumber = wordArray[0]
+
 
 //Determine which letter should have the tone according to pinyin rules
  for (i=0; i< wordArray.length; i++){
@@ -31,18 +31,13 @@ function makeArray(word){
      targetVowel = wordArray[i]
    }
  }
- console.log(wordArray)
- console.log(targetVowel)
- console.log(toneNumber)
- getPinyin(targetVowel, toneNumber, wordArray)
+ getPinyin(targetVowel, wordArray)
  }
 
-function getPinyin(targetVowel, toneNumber, wordArray){
-  console.log(wordArray)
+function getPinyin(targetVowel, wordArray){
+  let toneNumber = wordArray[0]
   pinyinVowel = pinyinVowelsArray[targetVowel][toneNumber -1]
-  console.log(wordArray.indexOf(targetVowel))
   wordArray.splice(wordArray.indexOf(targetVowel),1,pinyinVowel)
-  console.log(wordArray)
   wordArray.splice(0,1)
   let newWord = wordArray.reverse().join("")
   console.log(newWord)
