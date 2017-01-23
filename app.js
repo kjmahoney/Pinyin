@@ -7,38 +7,49 @@ var pinyinVowelsArray = {
   v: ["ǖ", "ǘ", "ǚ", "ǜ"]
 }
 
-function makeArray(word){
-  //break string into an array and reverse
-  let wordArray = word.split("").reverse()
+//break string into an array and reverse
+function toPinyin(word){
+  let wordArray = word.split("")
+  selectVowel(wordArray)
+}
 
-  //can probably do a case here
-  //Determine which letter should have the tone according to pinyin rules
+//Determine which letter should have the tone according to pinyin rules
+function selectVowel(wordArray){
+
   for (i=0; i< wordArray.length; i++){
     //  a and e trump all other vowels and always take the tone mark.
     if (wordArray[i] == "a" || wordArray[i] == "e"){
-      targetVowel = wordArray[i]
+      let targetVowel = wordArray[i]
+      getPinyin(targetVowel, wordArray)
+      break
+    }
+    // look to see if the following vowel is an a or an e
+    else if (wordArray[i+1] == "a" || wordArray[i+1] == "e"){
+      let targetVowel = wordArray[i+1]
+      getPinyin(targetVowel, wordArray)
       break
     }
     // In the combination ou, o takes the mark.
     else if(wordArray[i]=="o" && wordArray[i+1] == "u"){
-      targetVowel = wordArray[i]
+      let targetVowel = wordArray[i]
+      getPinyin(targetVowel, wordArray)
       break
     }
     // In all other cases, the final vowel takes the mark.
-    else if (wordArray[i] == "o" || wordArray[i] == "i" || wordArray[i] == "u"){
-      targetVowel = wordArray[i]
+    else if(wordArray[i] == "o" || wordArray[i] == "i" || wordArray[i] == "u"){
+      let targetVowel = wordArray[i]
+      getPinyin(targetVowel, wordArray)
     }
   }
-  getPinyin(targetVowel, wordArray)
 }
 
 function getPinyin(targetVowel, wordArray){
   //determine the tone of the word
-  let toneNumber = wordArray[0]
+  let toneNumber = wordArray[wordArray.length-1]
   let pinyinVowel = pinyinVowelsArray[targetVowel][toneNumber -1]
   wordArray.splice(wordArray.indexOf(targetVowel),1,pinyinVowel)
-  wordArray.splice(0,1)
-  let newWord = wordArray.reverse().join("")
+  wordArray.splice((wordArray.length-1),1)
+  let newWord = wordArray.join("")
   console.log(newWord)
 }
 
@@ -46,25 +57,7 @@ function chop(words){
   wordsNew = words.split(/(?=[\s=\d])/);
   console.log(wordsNew)
 }
-// /(?=[\s=)(])/
 
-var string = "this is a string,and I have a comma";
-var array = string.split(/[1234,]+/);
-
-//find the proper tone in the object
-
-// function getTone(wordArray){
-//   let toneNumber = wordArray[0]
-// }
-//
-// function replaceLetter(wordArray){
-//
-// }
-
-// x = targetVowel
-// pinyinLetters[x][toneNumber -1]
-
-//split arrays by their numbers thus making multiple items, then .map them
 
 // A and e trump all other vowels and always take the tone mark. There are no Mandarin syllables in Hanyu Pinyin that contain both a and e.
 // In the combination ou, o takes the mark.
